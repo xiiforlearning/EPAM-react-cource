@@ -1,0 +1,19 @@
+.wrapper {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+.form {
+    width: 50%;
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+
+    input {
+        flex: 4;
+    }
+
+    button {
+        flex: 1;
+    }
+} 
