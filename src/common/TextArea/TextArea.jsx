@@ -1,21 +1,19 @@
 import React from 'react';
-import './input.module.scss';
+import './textArea.module.scss';
 
-const Input = ({ labelText, placeholder, onChange, value }) => {
+const TextArea = ({ labelText, placeholder, onChange }) => {
 	return (
 		<label>
 			{labelText}
-			<input
-				id={labelText}
+			<textarea
 				type='text'
 				placeholder={
 					placeholder ? `Enter ${placeholder}...` : `Enter ${labelText}...`
 				}
 				onChange={onChange}
-				value={value}
-			></input>
+			></textarea>
 		</label>
 	);
 };
 
-export default Input;
+export default TextArea;

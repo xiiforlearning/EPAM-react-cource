@@ -7,7 +7,7 @@ import {
 } from '../../../../constants';
 import styles from './searchBar.module.scss';
 
-const SearchBar = () => {
+const SearchBar = ({ addCourseOnClick }) => {
 	return (
 		<div className={styles.wrapper}>
 			<form
@@ -16,10 +16,15 @@ const SearchBar = () => {
 					event.preventDefault();
 				}}
 			>
-				<Input></Input>
+				<Input />
 				<Button text={BUTTON_TEXT_SEARCH}></Button>
 			</form>
-			<Button text={BUTTON_TEXT_ADD_COURSE}></Button>
+			<Button
+				text={BUTTON_TEXT_ADD_COURSE}
+				onClick={() => {
+					addCourseOnClick(false);
+				}}
+			></Button>
 		</div>
 	);
 };

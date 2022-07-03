@@ -15,6 +15,7 @@ const CourseCard = ({
 	creationDate,
 	duration,
 	authors,
+	allAuthors,
 }) => {
 	return (
 		<div className={styles.wrapper}>
@@ -26,7 +27,7 @@ const CourseCard = ({
 				<div className={styles.courseInfo}>
 					<div>
 						<span>Autors: </span>
-						<p>{getAutors(authors).join(', ')}</p>
+						<p>{getAutors(authors, allAuthors).join(', ')}</p>
 					</div>
 					<div>
 						<span>Duration: </span>

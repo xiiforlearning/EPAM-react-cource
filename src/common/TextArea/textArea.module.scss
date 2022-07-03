@@ -3,9 +3,9 @@ label {
     flex-direction: column;
     gap: 5px;
 }
-input {
-    border: 1px solid orange;
+textarea {
+    border: 1px solid yellow;
     outline: none;
     padding: 5px 10px;
-    height: 30px;
+    height: 100px;
 }

@@ -9,13 +9,13 @@
 	align-items: flex-start;
 }
 .courseDesc {
-	flex: 3;
+	flex: 2;
 	h2 {
 			margin-bottom: 10px;
 	}
 }
 .courseInfoWrapper {
-	flex: 1.5;
+	flex: 1;
 	display: flex;
 	flex-direction: column;
 	align-items: flex-start;
@@ -38,7 +38,11 @@
 		}
 
 		p {
-			flex: 3;
+			flex: 4;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+			max-width: 250px;
+			overflow: hidden;
 		}
 	}
 }

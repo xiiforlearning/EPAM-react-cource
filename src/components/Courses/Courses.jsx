@@ -1,13 +1,13 @@
-import { mockedCoursesList } from '../../constants';
 import CourseCard from './components/CourseCard/CourseCard';
 import SearchBar from './components/SearchBar/SearchBar';
 import styles from './courses.module.scss';
 
-const Courses = () => {
+const Courses = ({ addCourseOnClick, courses, allAuthors }) => {
+	console.log(allAuthors);
 	return (
 		<div className={styles.wrapper}>
-			<SearchBar />
-			{mockedCoursesList.map((item) => (
+			<SearchBar addCourseOnClick={addCourseOnClick} />
+			{courses.map((item) => (
 				<CourseCard
 					key={item.id}
 					title={item.title}
@@ -15,6 +15,7 @@ const Courses = () => {
 					creationDate={item.creationDate}
 					duration={item.duration}
 					authors={item.authors}
+					allAuthors={allAuthors}
 				/>
 			))}
 		</div>
