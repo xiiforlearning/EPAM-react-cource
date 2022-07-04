@@ -9,10 +9,10 @@ export function dateConvert(date) {
 	return date.split('/').join('.');
 }
 
-export function getAutors(autors, allAuthors) {
+export function getAutors(authors, allAuthors) {
 	if (allAuthors) {
-		return autors.map((autor) => {
-			return allAuthors.find((item) => item.id === autor.name);
+		return authors.map((author) => {
+			return allAuthors.find((item) => item.id === author).name;
 		});
 	}
 }

@@ -16,7 +16,6 @@ function App() {
 		setAuthors(mockedAuthorsList);
 	}, []);
 
-	console.log(authors);
 	return (
 		<div className={styles.wrapper}>
 			<Header />

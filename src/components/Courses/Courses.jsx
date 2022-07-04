@@ -3,7 +3,6 @@ import SearchBar from './components/SearchBar/SearchBar';
 import styles from './courses.module.scss';
 
 const Courses = ({ addCourseOnClick, courses, allAuthors }) => {
-	console.log(allAuthors);
 	return (
 		<div className={styles.wrapper}>
 			<SearchBar addCourseOnClick={addCourseOnClick} />

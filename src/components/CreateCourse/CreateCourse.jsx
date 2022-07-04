@@ -38,9 +38,7 @@ const CreateCourse = ({
 			duration: +timer,
 			authors: courseAuthors,
 		};
-		console.log(newCourse);
 		const areTrue = Object.values(newCourse).every((value) => value);
-		console.log(areTrue);
 		if (areTrue) {
 			setCourses([...courses, newCourse]);
 			addCourseOnClick(true);
@@ -91,6 +89,7 @@ const CreateCourse = ({
 					<h3>Authors</h3>
 					{allAuthors.map((author) => (
 						<AuthorItem
+							key={author.id}
 							author={author}
 							courseAuthors={courseAuthors}
 							setAllAuthors={setAllAuthors}
@@ -116,6 +115,7 @@ const CreateCourse = ({
 					<h3>Course Authors</h3>
 					{courseAuthors.map((author) => (
 						<AuthorItem
+							key={author.id}
 							author={author}
 							courseAuthors={courseAuthors}
 							setAllAuthors={setAllAuthors}
