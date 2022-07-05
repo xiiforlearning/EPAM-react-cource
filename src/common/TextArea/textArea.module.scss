@@ -1,0 +1,11 @@
+label {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+textarea {
+    border: 1px solid yellow;
+    outline: none;
+    padding: 5px 10px;
+    height: 100px;
+}

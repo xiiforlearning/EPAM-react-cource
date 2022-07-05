@@ -1,0 +1,70 @@
+.wrapper, .additionalInfoWrapper {
+    padding: 20px;
+    border: 1px solid aqua;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+.topSection {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.additionalInfoWrapper{ 
+    border: 1px solid black;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.addAuthorContainer {
+    display: flex;
+    flex-direction: column;
+
+    * {
+        margin-bottom: 10px;
+    }
+
+    h3 {
+        text-align: center;
+    }
+}
+
+.authorsContainer {
+    display: flex;
+    flex-direction: column;
+
+    * {
+        margin-bottom: 10px;
+    }
+
+    h3 {
+        text-align: center;
+    }
+}
+
+.durationContainer {
+    display: flex;
+    flex-direction: column;
+
+    * {
+        margin-bottom: 10px;
+    }
+
+    h3 {
+        text-align: center;
+    }
+}
+
+.courseAuthorsContainer {
+    display: flex;
+    flex-direction: column;
+
+    * {
+        margin-bottom: 10px;
+    }
+
+    h3 {
+        text-align: center;
+    }
+}
