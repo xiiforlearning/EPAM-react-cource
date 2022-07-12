@@ -1,12 +1,13 @@
 export const BUTTON_TEXT_SEARCH = 'Search';
 export const BUTTON_TEXT_LOGOUT = 'Logout';
+export const BUTTON_TEXT_LOGIN = 'Login';
 export const BUTTON_TEXT_SHOW_COURSE = 'Show Course';
-export const MOCK_NAME = 'Dave';
 export const BUTTON_TEXT_ADD_COURSE = 'Add New Course';
 export const BUTTON_TEXT_CREATE_COURSE = 'Create Course';
 export const BUTTON_TEXT_CREATE_AUTHOR = 'Create Author';
 export const BUTTON_TEXT_ADD_AUTHOR = 'Add Author';
 export const BUTTON_TEXT_DELETE_AUTHOR = 'Delete Author';
+export const BUTTON_TEXT_REGISTRATION = 'Registration';
 
 export const mockedCoursesList = [
 	{

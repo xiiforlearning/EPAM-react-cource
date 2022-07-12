@@ -1,40 +1,26 @@
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+
 import Courses from './components/Courses/Courses';
 import Header from './components/Header/Header';
-
-import styles from './App.module.scss';
 import CreateCourse from './components/CreateCourse/CreateCourse';
-import { useEffect, useState } from 'react';
-import { mockedAuthorsList, mockedCoursesList } from './constants';
+import Registration from './components/Registration/Registration';
+import Login from './components/Login/Login';
+import CourseInfo from './components/CourseInfo/CourseInfo';
 
 function App() {
-	const [showCourses, setShowCourses] = useState(true);
-	const [courses, setCourses] = useState([]);
-	const [authors, setAuthors] = useState([]);
-
-	useEffect(() => {
-		setCourses(mockedCoursesList);
-		setAuthors(mockedAuthorsList);
-	}, []);
-
+	const token = localStorage.getItem('token');
 	return (
-		<div className={styles.wrapper}>
+		<BrowserRouter>
 			<Header />
-			{showCourses ? (
-				<Courses
-					addCourseOnClick={setShowCourses}
-					courses={courses}
-					allAuthors={authors}
-				/>
-			) : (
-				<CreateCourse
-					addCourseOnClick={setShowCourses}
-					courses={courses}
-					setCourses={setCourses}
-					authors={authors}
-					setAuthors={setAuthors}
-				/>
-			)}
-		</div>
+			<Routes>
+				<Route path='/' element={token ? <Courses /> : <Login />} />
+				<Route path='/courses' element={<Courses />} />
+				<Route path='/courses/:id' element={<CourseInfo />} />
+				<Route path='/courses/add' element={<CreateCourse />} />
+				<Route path='/registration' element={<Registration />} />
+				<Route path='/login' element={<Login />} />
+			</Routes>
+		</BrowserRouter>
 	);
 }
 

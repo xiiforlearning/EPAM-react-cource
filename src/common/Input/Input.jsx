@@ -1,13 +1,13 @@
 import React from 'react';
 import './input.module.scss';
 
-const Input = ({ labelText, placeholder, onChange, value }) => {
+const Input = ({ labelText, placeholder, onChange, value, type }) => {
 	return (
 		<label>
 			{labelText}
 			<input
 				id={labelText}
-				type='text'
+				type={type ? type : 'text'}
 				placeholder={
 					placeholder ? `Enter ${placeholder}...` : `Enter ${labelText}...`
 				}

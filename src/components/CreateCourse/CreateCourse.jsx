@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { v4 as uuidv4 } from 'uuid';
+import axios from 'axios';
+import { Link } from 'react-router-dom';
 import { Button } from '../../common/Button/Button';
 import Input from '../../common/Input/Input';
 import TextArea from '../../common/TextArea/TextArea';
@@ -11,37 +12,33 @@ import AuthorItem from './components/AuthorItem/AuthorItem';
 import Timer from './components/Timer/Timer';
 import styles from './createCourse.module.scss';
 
-const CreateCourse = ({
-	setCourses,
-	addCourseOnClick,
-	courses,
-	authors,
-	setAuthors,
-}) => {
+const CreateCourse = () => {
 	const [title, setTitle] = useState('');
 	const [description, setDescription] = useState('');
 	const [newAuthor, setNewAuthor] = useState('');
 	const [timer, setTimer] = useState('');
-	const [allAuthors, setAllAuthors] = useState(authors);
+	const [allAuthors, setAllAuthors] = useState([]);
 	const [courseAuthors, setCourseAutors] = useState([]);
 
 	useEffect(() => {
-		setAllAuthors(authors);
-	}, [authors]);
+		const getAllAuthors = async () => {
+			return await axios.get('/authors/all').then((response) => {
+				setAllAuthors(response.data.result);
+			});
+		};
+		getAllAuthors();
+	}, []);
 
 	const createCourseHandler = () => {
 		const newCourse = {
-			id: uuidv4(),
 			title,
 			description,
-			creationDate: new Date().toLocaleDateString(),
 			duration: +timer,
 			authors: courseAuthors,
 		};
 		const areTrue = Object.values(newCourse).every((value) => value);
 		if (areTrue) {
-			setCourses([...courses, newCourse]);
-			addCourseOnClick(true);
+			axios.post('/courses/add', newCourse);
 		} else {
 			alert('Please, fill in all fields');
 		}
@@ -60,6 +57,7 @@ const CreateCourse = ({
 					text={BUTTON_TEXT_CREATE_COURSE}
 					onClick={createCourseHandler}
 				/>
+				<Link to='/courses'>{'< Back to courses'}</Link>
 			</div>
 			<TextArea
 				labelText='Description'
@@ -80,8 +78,16 @@ const CreateCourse = ({
 					<Button
 						text={BUTTON_TEXT_CREATE_AUTHOR}
 						onClick={() => {
-							setAuthors([...authors, { name: newAuthor, id: uuidv4() }]);
-							setNewAuthor('');
+							const token = localStorage.getItem('token');
+							axios.post(
+								'/authors/add',
+								{ name: newAuthor },
+								{
+									headers: {
+										Authorization: `Bearer ${token}`,
+									},
+								}
+							);
 						}}
 					/>
 				</div>
