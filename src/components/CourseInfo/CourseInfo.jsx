@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
 import { useParams } from 'react-router-dom';
 
 import { Link } from 'react-router-dom';
@@ -11,30 +10,16 @@ import {
 
 import styles from './courseInfo.module.scss';
 
-const CourseInfo = () => {
+const CourseInfo = ({ courses, allAuthors }) => {
 	const { id } = useParams();
-	console.log(id);
 	const [courseData, setCourseData] = useState({});
-	const [allAuthors, setAllAuthors] = useState([]);
 	useEffect(() => {
-		const getCourseData = async () => {
-			return await axios.get(`/courses/${id}`).then((response) => {
-				setCourseData(response.data.result);
-			});
-		};
-		getCourseData();
-	}, [id]);
+		setCourseData(courses.find((course) => course.id === id));
+	}, [courseData, courses, id]);
 
-	useEffect(() => {
-		const getAllAuthors = async () => {
-			return await axios.get('/authors/all').then((response) => {
-				setAllAuthors(response.data.result);
-			});
-		};
-		getAllAuthors();
-	}, []);
+	const isEmpty = Object.keys(courseData).length === 0;
 
-	return (
+	return isEmpty ? null : (
 		<div className={styles.wrapper}>
 			<Link to='/courses'>{'< Back to courses'}</Link>
 			<div className={styles.mainInfo}>
@@ -43,10 +28,8 @@ const CourseInfo = () => {
 					<p className={styles.description}>{courseData.description}</p>
 					<div className={styles.courseInfo}>
 						<div>
-							<span>Autors: </span>
-							{allAuthors.length && (
-								<p>{getAutors(courseData.authors, allAuthors)}</p>
-							)}
+							<span>ID: </span>
+							{courseData.id && <p>{courseData.id}</p>}
 						</div>
 						<div>
 							<span>Duration: </span>
@@ -56,6 +39,12 @@ const CourseInfo = () => {
 							<span>Created: </span>
 							{courseData.creationDate && (
 								<p>{dateConvert(courseData.creationDate)}</p>
+							)}
+						</div>
+						<div>
+							<span>Autors: </span>
+							{allAuthors.length && (
+								<p>{getAutors(courseData.authors, allAuthors)}</p>
 							)}
 						</div>
 					</div>

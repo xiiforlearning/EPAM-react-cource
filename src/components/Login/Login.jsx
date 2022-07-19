@@ -1,39 +1,34 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '../../common/Button/Button';
 import Input from '../../common/Input/Input';
 import { BUTTON_TEXT_LOGIN } from '../../constants';
 
 import styles from './login.module.scss';
+import { loginService } from '../../services';
 
 const Login = () => {
 	const navigate = useNavigate();
-	const [name, setName] = useState('');
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 
-	const loginHandler = (event) => {
+	const loginHandler = async (event) => {
 		event.preventDefault();
 		const userInfo = {
-			name,
 			email,
 			password,
 		};
 		const areTrue = Object.values(userInfo).every((value) => value);
 		if (areTrue) {
-			axios
-				.post('/login', userInfo)
-				.then((response) => {
-					localStorage.setItem(
-						'token',
-						response.data.result.replace('Bearer ', '')
-					);
-					navigate('/courses');
-				})
-				.catch((error) => {
-					alert(`Error ========> ${error.response.data.errors[0]}`);
-				});
+			const response = await loginService(userInfo);
+			if (response.status === 201) {
+				localStorage.setItem(
+					'token',
+					response.data.result.replace('Bearer ', '')
+				);
+				navigate('/courses');
+				window.dispatchEvent(new Event('token'));
+			}
 		} else {
 			alert('Please, fill in all fields');
 		}
@@ -42,13 +37,6 @@ const Login = () => {
 	return (
 		<form onSubmit={loginHandler} className={styles.wrapper}>
 			<h2>Login</h2>
-			<Input
-				value={name}
-				labelText='Name'
-				onChange={(e) => {
-					setName(e.target.value);
-				}}
-			/>
 			<Input
 				value={email}
 				type='email'
@@ -65,7 +53,7 @@ const Login = () => {
 					setPassword(e.target.value);
 				}}
 			/>
-			<Button type='submit' text={BUTTON_TEXT_LOGIN} onClick={loginHandler} />
+			<Button type='submit' text={BUTTON_TEXT_LOGIN} />
 
 			<p>
 				If you not have an account you can{' '}
