@@ -50,7 +50,6 @@ const CreateCourse = () => {
 		const areTrue = Object.values(newCourse).every((value) => value);
 		if (areTrue) {
 			dispatch(addNewCourse(newCourse));
-			console.log('Initial state: ', store.getState());
 			navigate('/courses');
 		} else {
 			alert('Please, fill in all fields');
