@@ -44,7 +44,7 @@ const CourseInfo = ({ courses, allAuthors }) => {
 						<div>
 							<span>Autors: </span>
 							{allAuthors.length && (
-								<p>{getAutors(courseData.authors, allAuthors)}</p>
+								<p>{getAutors(courseData.authors, allAuthors).join(', ')}</p>
 							)}
 						</div>
 					</div>

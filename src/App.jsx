@@ -8,7 +8,7 @@ import Registration from './components/Registration/Registration';
 import Login from './components/Login/Login';
 import CourseInfo from './components/CourseInfo/CourseInfo';
 import { mockedAuthorsList, mockedCoursesList } from './constants';
-import { getMe } from './services';
+import { getMe } from './services/http.service';
 
 function App() {
 	const [token, setToken] = useState('');

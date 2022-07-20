@@ -5,7 +5,7 @@ import Input from '../../common/Input/Input';
 import { BUTTON_TEXT_LOGIN } from '../../constants';
 
 import styles from './login.module.scss';
-import { loginService } from '../../services';
+import { loginService } from '../../services/http.service';
 
 const Login = () => {
 	const navigate = useNavigate();

@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 
 import { Button } from '../../common/Button/Button';
 import Input from '../../common/Input/Input';
-import { registerService } from '../../services';
+import { registerService } from '../../services/http.service';
 import { BUTTON_TEXT_REGISTRATION } from '../../constants';
 
 import styles from './registration.module.scss';
