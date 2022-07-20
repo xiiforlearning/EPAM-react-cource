@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
 import { Link } from 'react-router-dom';
@@ -10,9 +11,12 @@ import {
 
 import styles from './courseInfo.module.scss';
 
-const CourseInfo = ({ courses, allAuthors }) => {
+const CourseInfo = () => {
 	const { id } = useParams();
 	const [courseData, setCourseData] = useState({});
+	const courses = useSelector((state) => state.course);
+	const allAuthors = useSelector((state) => state.author);
+
 	useEffect(() => {
 		setCourseData(courses.find((course) => course.id === id));
 	}, [courseData, courses, id]);

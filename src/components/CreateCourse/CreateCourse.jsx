@@ -13,19 +13,30 @@ import AuthorItem from './components/AuthorItem/AuthorItem';
 import Timer from './components/Timer/Timer';
 
 import styles from './createCourse.module.scss';
+import { useDispatch, useSelector } from 'react-redux';
+import { addNewCourse } from '../../store/course/actions';
+import { createNewAuthor } from '../../store/author/actions';
+import store from '../../store';
 
-const CreateCourse = ({ setCourses, courses, authors, setAuthors }) => {
+const CreateCourse = () => {
 	const navigate = useNavigate();
+	const dispatch = useDispatch();
+	const allAuthors = useSelector((state) => state.author);
+
 	const [title, setTitle] = useState('');
 	const [description, setDescription] = useState('');
 	const [newAuthor, setNewAuthor] = useState('');
 	const [timer, setTimer] = useState('');
-	const [allAuthors, setAllAuthors] = useState(authors);
 	const [courseAuthors, setCourseAutors] = useState([]);
+	const [courseAllAuthors, setCourseAllAuthors] = useState([...allAuthors]);
 
 	useEffect(() => {
-		setAllAuthors(authors);
-	}, [authors]);
+		const allAuthorsWithoutCA = allAuthors.map((item) => {
+			return courseAuthors.includes(item) ? '' : item;
+		});
+
+		setCourseAllAuthors(allAuthorsWithoutCA);
+	}, [allAuthors, courseAuthors]);
 
 	const createCourseHandler = () => {
 		const newCourse = {
@@ -38,7 +49,8 @@ const CreateCourse = ({ setCourses, courses, authors, setAuthors }) => {
 		};
 		const areTrue = Object.values(newCourse).every((value) => value);
 		if (areTrue) {
-			setCourses([...courses, newCourse]);
+			dispatch(addNewCourse(newCourse));
+			console.log('Initial state: ', store.getState());
 			navigate('/courses');
 		} else {
 			alert('Please, fill in all fields');
@@ -79,24 +91,27 @@ const CreateCourse = ({ setCourses, courses, authors, setAuthors }) => {
 					<Button
 						text={BUTTON_TEXT_CREATE_AUTHOR}
 						onClick={() => {
-							setAuthors([...authors, { name: newAuthor, id: uuidv4() }]);
+							dispatch(createNewAuthor({ name: newAuthor, id: uuidv4() }));
 							setNewAuthor('');
 						}}
 					/>
 				</div>
 				<div className={styles.authorsContainer}>
 					<h3>Authors</h3>
-					{allAuthors.map((author) => (
-						<AuthorItem
-							key={author.id}
-							author={author}
-							courseAuthors={courseAuthors}
-							setAllAuthors={setAllAuthors}
-							allAuthors={allAuthors}
-							setCourseAutors={setCourseAutors}
-							isAllAuthorsList={true}
-						/>
-					))}
+					{courseAllAuthors.map(
+						(author) =>
+							author && (
+								<AuthorItem
+									key={author.id}
+									author={author}
+									courseAuthors={courseAuthors}
+									courseAllAuthors={courseAllAuthors}
+									setCourseAutors={setCourseAutors}
+									setCourseAllAuthors={setCourseAllAuthors}
+									isAllAuthorsList={true}
+								/>
+							)
+					)}
 				</div>
 				<div className={styles.durationContainer}>
 					<h3>Duration</h3>
@@ -117,9 +132,9 @@ const CreateCourse = ({ setCourses, courses, authors, setAuthors }) => {
 							key={author.id}
 							author={author}
 							courseAuthors={courseAuthors}
-							setAllAuthors={setAllAuthors}
-							allAuthors={allAuthors}
+							courseAllAuthors={courseAllAuthors}
 							setCourseAutors={setCourseAutors}
+							setCourseAllAuthors={setCourseAllAuthors}
 							isAllAuthorsList={false}
 						/>
 					))}

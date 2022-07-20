@@ -1,10 +1,15 @@
+import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+
 import CourseCard from './components/CourseCard/CourseCard';
 import SearchBar from './components/SearchBar/SearchBar';
+
 import styles from './courses.module.scss';
 
-const Courses = ({ courses, allAuthors }) => {
+const Courses = () => {
 	const navigate = useNavigate();
+	const courses = useSelector((state) => state.course);
+	const allAuthors = useSelector((state) => state.author);
 
 	const renderCourseList = (courses, allAuthors) => {
 		if (courses.length && allAuthors.length) {
