@@ -19,12 +19,7 @@ const SearchBar = ({ addCourseOnClick }) => {
 				<Input />
 				<Button text={BUTTON_TEXT_SEARCH}></Button>
 			</form>
-			<Button
-				text={BUTTON_TEXT_ADD_COURSE}
-				onClick={() => {
-					addCourseOnClick(false);
-				}}
-			></Button>
+			<Button text={BUTTON_TEXT_ADD_COURSE} onClick={addCourseOnClick}></Button>
 		</div>
 	);
 };

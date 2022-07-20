@@ -1,5 +1,5 @@
 import React from 'react';
-
+import { useNavigate } from 'react-router-dom';
 import styles from './courseCard.module.scss';
 import { Button } from '../../../../common/Button/Button';
 import { BUTTON_TEXT_SHOW_COURSE } from '../../../../constants';
@@ -16,7 +16,9 @@ const CourseCard = ({
 	duration,
 	authors,
 	allAuthors,
+	id,
 }) => {
+	const navigate = useNavigate();
 	return (
 		<div className={styles.wrapper}>
 			<div className={styles.courseDesc}>
@@ -38,7 +40,12 @@ const CourseCard = ({
 						<p>{dateConvert(creationDate)}</p>
 					</div>
 				</div>
-				<Button text={BUTTON_TEXT_SHOW_COURSE}></Button>
+				<Button
+					text={BUTTON_TEXT_SHOW_COURSE}
+					onClick={() => {
+						navigate(`/courses/${id}`);
+					}}
+				></Button>
 			</div>
 		</div>
 	);

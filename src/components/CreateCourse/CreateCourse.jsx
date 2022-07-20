@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
+import { Link, useNavigate } from 'react-router-dom';
+
 import { Button } from '../../common/Button/Button';
 import Input from '../../common/Input/Input';
 import TextArea from '../../common/TextArea/TextArea';
@@ -9,15 +11,11 @@ import {
 } from '../../constants';
 import AuthorItem from './components/AuthorItem/AuthorItem';
 import Timer from './components/Timer/Timer';
+
 import styles from './createCourse.module.scss';
 
-const CreateCourse = ({
-	setCourses,
-	addCourseOnClick,
-	courses,
-	authors,
-	setAuthors,
-}) => {
+const CreateCourse = ({ setCourses, courses, authors, setAuthors }) => {
+	const navigate = useNavigate();
 	const [title, setTitle] = useState('');
 	const [description, setDescription] = useState('');
 	const [newAuthor, setNewAuthor] = useState('');
@@ -36,12 +34,12 @@ const CreateCourse = ({
 			description,
 			creationDate: new Date().toLocaleDateString(),
 			duration: +timer,
-			authors: courseAuthors,
+			authors: courseAuthors.map((author) => author.id),
 		};
 		const areTrue = Object.values(newCourse).every((value) => value);
 		if (areTrue) {
 			setCourses([...courses, newCourse]);
-			addCourseOnClick(true);
+			navigate('/courses');
 		} else {
 			alert('Please, fill in all fields');
 		}
@@ -60,6 +58,7 @@ const CreateCourse = ({
 					text={BUTTON_TEXT_CREATE_COURSE}
 					onClick={createCourseHandler}
 				/>
+				<Link to='/courses'>{'< Back to courses'}</Link>
 			</div>
 			<TextArea
 				labelText='Description'
