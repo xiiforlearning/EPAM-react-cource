@@ -1,6 +1,6 @@
 import { CREATE_NEW_AUTHOR, SET_AUTHORS_LIST } from './types';
 
-const authorInitialState = [];
+export const authorInitialState = [];
 
 export default function authorReducer(state = authorInitialState, action) {
 	switch (action.type) {

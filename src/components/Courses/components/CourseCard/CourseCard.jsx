@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import styles from './courseCard.module.scss';
+import { useDispatch } from 'react-redux';
+
 import { Button } from '../../../../common/Button/Button';
 import { BUTTON_TEXT_SHOW_COURSE } from '../../../../constants';
 import {
@@ -8,6 +9,9 @@ import {
 	getAutors,
 	timeConvert,
 } from '../../../../helpers/getCourseInfo';
+
+import styles from './courseCard.module.scss';
+import { removeCourse } from '../../../../store/course/actions';
 
 const CourseCard = ({
 	title,
@@ -19,6 +23,9 @@ const CourseCard = ({
 	id,
 }) => {
 	const navigate = useNavigate();
+	const dispatch = useDispatch();
+	const authorsList = getAutors(authors, allAuthors).join(', ');
+
 	return (
 		<div className={styles.wrapper}>
 			<div className={styles.courseDesc}>
@@ -29,23 +36,32 @@ const CourseCard = ({
 				<div className={styles.courseInfo}>
 					<div>
 						<span>Autors: </span>
-						<p>{getAutors(authors, allAuthors).join(', ')}</p>
+						<p>{authorsList}</p>
 					</div>
 					<div>
 						<span>Duration: </span>
-						<p>{timeConvert(duration)}</p>
+						<p>{duration && timeConvert(duration)}</p>
 					</div>
 					<div>
 						<span>Created: </span>
-						<p>{dateConvert(creationDate)}</p>
+						<p>{creationDate && dateConvert(creationDate)}</p>
 					</div>
 				</div>
-				<Button
-					text={BUTTON_TEXT_SHOW_COURSE}
-					onClick={() => {
-						navigate(`/courses/${id}`);
-					}}
-				></Button>
+				<div className={styles.buttonsWrapper}>
+					<Button
+						text={BUTTON_TEXT_SHOW_COURSE}
+						onClick={() => {
+							navigate(`/courses/${id}`);
+						}}
+					/>
+					<Button
+						text='delete'
+						onClick={() => {
+							dispatch(removeCourse(id));
+						}}
+					/>
+					<Button text='update' onClick={() => {}} />
+				</div>
 			</div>
 		</div>
 	);

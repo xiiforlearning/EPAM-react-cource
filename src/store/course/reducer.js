@@ -1,6 +1,6 @@
-import { ADD_NEW_COURSE, SET_COURSES_LIST } from './types';
+import { ADD_NEW_COURSE, REMOVE_COURSE, SET_COURSES_LIST } from './types';
 
-const courseInitialState = [];
+export const courseInitialState = [];
 
 export default function courseReducer(state = courseInitialState, action) {
 	switch (action.type) {
@@ -9,6 +9,9 @@ export default function courseReducer(state = courseInitialState, action) {
 
 		case ADD_NEW_COURSE:
 			return [...state, action.payload];
+
+		case REMOVE_COURSE:
+			return [...state].filter((item) => item.id !== action.payload);
 
 		default:
 			return state;

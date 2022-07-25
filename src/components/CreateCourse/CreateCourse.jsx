@@ -16,7 +16,6 @@ import styles from './createCourse.module.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import { addNewCourse } from '../../store/course/actions';
 import { createNewAuthor } from '../../store/author/actions';
-import store from '../../store';
 
 const CreateCourse = () => {
 	const navigate = useNavigate();

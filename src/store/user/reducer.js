@@ -1,6 +1,6 @@
 import { LOGIN_USER_INFO, LOGOUT_USER_INFO } from './types';
 
-const userInitialState = {
+export const userInitialState = {
 	isAuth: false,
 	name: '',
 	email: '',
@@ -16,10 +16,7 @@ export default function userReducer(state = userInitialState, action) {
 			};
 
 		case LOGOUT_USER_INFO:
-			return {
-				...state,
-				...userInitialState,
-			};
+			return userInitialState;
 
 		default:
 			return state;
