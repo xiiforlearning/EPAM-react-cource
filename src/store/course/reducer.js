@@ -5,7 +5,7 @@ export const courseInitialState = [];
 export default function courseReducer(state = courseInitialState, action) {
 	switch (action.type) {
 		case SET_COURSES_LIST:
-			return [...new Set(action.payload)];
+			return action.payload;
 
 		case ADD_NEW_COURSE:
 			return [...state, action.payload];

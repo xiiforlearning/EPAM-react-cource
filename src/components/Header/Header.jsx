@@ -23,6 +23,7 @@ const Header = () => {
 						text={BUTTON_TEXT_LOGOUT}
 						onClick={() => {
 							dispatch(logoutUserInfo());
+							localStorage.removeItem('token');
 							navigate('/login');
 						}}
 					></Button>

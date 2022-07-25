@@ -32,6 +32,7 @@ const Login = () => {
 						token: token,
 					})
 				);
+				localStorage.setItem('token', token);
 				navigate('/courses');
 			}
 		} else {

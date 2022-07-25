@@ -15,8 +15,14 @@ import CourseInfo from './components/CourseInfo/CourseInfo';
 
 function App() {
 	const dispatch = useDispatch();
-
+	const newToken = localStorage.getItem('token');
 	const token = useSelector((state) => state.user.token);
+
+	useEffect(() => {
+		if (newToken) {
+			dispatch(loginUserInfo({ token: newToken }));
+		}
+	}, [dispatch, newToken]);
 
 	useEffect(() => {
 		const getName = async () => {
