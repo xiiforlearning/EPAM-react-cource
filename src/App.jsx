@@ -1,78 +1,68 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 
+import { getAuthors, getCourses, getMe } from './services/http.service';
+import { loginUserInfo } from './store/user/actions';
+import { setCourseList } from './store/course/actions';
+import { setAuthorList } from './store/author/actions';
 import Courses from './components/Courses/Courses';
 import Header from './components/Header/Header';
 import CreateCourse from './components/CreateCourse/CreateCourse';
 import Registration from './components/Registration/Registration';
 import Login from './components/Login/Login';
 import CourseInfo from './components/CourseInfo/CourseInfo';
-import { mockedAuthorsList, mockedCoursesList } from './constants';
-import { getMe } from './services/http.service';
 
 function App() {
-	const [token, setToken] = useState('');
-	const [name, setName] = useState('');
-	const [courses, setCourses] = useState([]);
-	const [authors, setAuthors] = useState([]);
-
-	const getToken = async () => {
-		const newToken = localStorage.getItem('token');
-		if (newToken) {
-			const newName = await getMe(newToken);
-			setName(newName.data.result.name);
-		} else {
-			setName('');
-		}
-		setToken(newToken);
-	};
+	const dispatch = useDispatch();
+	const newToken = localStorage.getItem('token');
+	const token = useSelector((state) => state.user.token);
 
 	useEffect(() => {
-		setCourses(mockedCoursesList);
-		setAuthors(mockedAuthorsList);
-		getToken();
-		window.addEventListener('token', () => {
-			getToken();
-		});
-	}, []);
+		if (newToken) {
+			dispatch(loginUserInfo({ token: newToken }));
+		}
+	}, [dispatch, newToken]);
+
+	useEffect(() => {
+		const getName = async () => {
+			if (token) {
+				const newName = await getMe(token);
+				dispatch(
+					loginUserInfo({
+						name: newName.data.result.name,
+					})
+				);
+			}
+		};
+		getName();
+	}, [dispatch, token]);
+
+	useEffect(() => {
+		const getCourseList = async () => {
+			const response = await getCourses();
+			dispatch(setCourseList(response.data.result));
+		};
+		const getAuthorList = async () => {
+			const response = await getAuthors();
+			dispatch(setAuthorList(response.data.result));
+		};
+		getAuthorList();
+		getCourseList();
+	}, [dispatch]);
 
 	return (
 		<BrowserRouter>
-			<Header name={name} />
+			<Header />
 			<Routes>
-				<Route
-					path='/'
-					element={
-						token ? (
-							<Courses courses={courses} allAuthors={authors} />
-						) : (
-							<Login />
-						)
-					}
-				/>
+				<Route path='/' element={token ? <Courses /> : <Login />} />
 				<Route path='/registration' element={<Registration />} />
 				<Route path='/login' element={<Login />} />
 				{!!token && (
 					<>
-						<Route
-							path='/courses'
-							element={<Courses courses={courses} allAuthors={authors} />}
-						/>
-						<Route
-							path='/courses/:id'
-							element={<CourseInfo courses={courses} allAuthors={authors} />}
-						/>
-						<Route
-							path='/courses/add'
-							element={
-								<CreateCourse
-									courses={courses}
-									setCourses={setCourses}
-									authors={authors}
-									setAuthors={setAuthors}
-								/>
-							}
-						/>
+						<Route path='/courses' element={<Courses />} />
+						<Route path='/courses/:id' element={<CourseInfo />} />
+						<Route path='/courses/add' element={<CreateCourse />} />
 					</>
 				)}
 				<Route path='*' element={<Login />} />

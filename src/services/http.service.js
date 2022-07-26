@@ -25,10 +25,32 @@ export const registerService = async (newUser) => {
 };
 
 export const getMe = async (token) => {
-	const response = await axios.get('/users/me', {
-		headers: {
-			Authorization: `Bearer ${token}`,
-		},
-	});
-	return response;
+	try {
+		const response = await axios.get('/users/me', {
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		});
+		return response;
+	} catch (error) {
+		alert(error.response.data.result);
+	}
+};
+
+export const getCourses = async () => {
+	try {
+		const response = await axios.get('/courses/all');
+		return response;
+	} catch (error) {
+		alert(error.response.data.result);
+	}
+};
+
+export const getAuthors = async () => {
+	try {
+		const response = await axios.get('/authors/all');
+		return response;
+	} catch (error) {
+		alert(error.response.data.result);
+	}
 };

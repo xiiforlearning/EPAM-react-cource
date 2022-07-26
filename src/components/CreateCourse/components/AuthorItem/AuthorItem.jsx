@@ -10,18 +10,20 @@ import styles from './authorItem.module.scss';
 const AuthorItem = ({
 	author,
 	courseAuthors,
-	setAllAuthors,
-	allAuthors,
+	courseAllAuthors,
 	setCourseAutors,
 	isAllAuthorsList,
+	setCourseAllAuthors,
 }) => {
 	const addAutorToCourse = () => {
 		setCourseAutors([...courseAuthors, author]);
-		setAllAuthors(allAuthors.filter((item) => item.id !== author.id));
+		setCourseAllAuthors(
+			courseAllAuthors.filter((item) => item.id !== author.id)
+		);
 	};
 
 	const removeAuthorFromCourse = () => {
-		setAllAuthors([...allAuthors, author]);
+		setCourseAllAuthors([...courseAllAuthors, author]);
 		setCourseAutors(courseAuthors.filter((item) => item.id !== author.id));
 	};
 	return (

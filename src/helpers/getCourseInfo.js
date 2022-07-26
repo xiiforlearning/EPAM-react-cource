@@ -10,9 +10,7 @@ export function dateConvert(date) {
 }
 
 export function getAutors(authors, allAuthors) {
-	if (allAuthors) {
-		return authors.map((author) => {
-			return allAuthors.find((item) => item.id === author).name;
-		});
-	}
+	return authors.map((author) => {
+		return allAuthors.find((item) => item.id === author).name;
+	});
 }
