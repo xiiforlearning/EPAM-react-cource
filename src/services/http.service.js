@@ -37,7 +37,7 @@ export const getMe = async (token) => {
 	}
 };
 
-export const getCourses = async () => {
+export const fetchCourses = async () => {
 	try {
 		const response = await axios.get('/courses/all');
 		return response;
@@ -49,6 +49,66 @@ export const getCourses = async () => {
 export const getAuthors = async () => {
 	try {
 		const response = await axios.get('/authors/all');
+		return response;
+	} catch (error) {
+		alert(error.response.data.result);
+	}
+};
+
+export const addCourse = async (body) => {
+	const token = localStorage.getItem('token');
+	try {
+		const response = await axios.post('/courses/add', body, {
+			headers: {
+				Authorization: `Bearer ${token}`,
+				'Content-Type': 'application/json',
+			},
+		});
+		return response;
+	} catch (error) {
+		alert(error.response.data.result);
+	}
+};
+
+export const updateCourse = async (body, id) => {
+	const token = localStorage.getItem('token');
+	try {
+		const response = await axios.put(`/courses/${id}`, body, {
+			headers: {
+				Authorization: `Bearer ${token}`,
+				'Content-Type': 'application/json',
+			},
+		});
+		return response;
+	} catch (error) {
+		alert(error.response.data.result);
+	}
+};
+
+export const removeCourse = async (id) => {
+	const token = localStorage.getItem('token');
+	try {
+		const response = await axios.delete(`/courses/${id}`, {
+			headers: {
+				Authorization: `Bearer ${token}`,
+				'Content-Type': 'application/json',
+			},
+		});
+		return response;
+	} catch (error) {
+		alert(error.response.data.result);
+	}
+};
+
+export const addAuthor = async (body) => {
+	const token = localStorage.getItem('token');
+	try {
+		const response = await axios.post('/authors/add', body, {
+			headers: {
+				Authorization: `Bearer ${token}`,
+				'Content-Type': 'application/json',
+			},
+		});
 		return response;
 	} catch (error) {
 		alert(error.response.data.result);

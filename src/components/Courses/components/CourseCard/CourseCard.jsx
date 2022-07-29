@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import { Button } from '../../../../common/Button/Button';
 import { BUTTON_TEXT_SHOW_COURSE } from '../../../../constants';
@@ -11,7 +11,8 @@ import {
 } from '../../../../helpers/getCourseInfo';
 
 import styles from './courseCard.module.scss';
-import { removeCourse } from '../../../../store/course/actions';
+import { removeCourseAction } from '../../../../store/course/thunk';
+import store from '../../../../store';
 
 const CourseCard = ({
 	title,
@@ -23,8 +24,8 @@ const CourseCard = ({
 	id,
 }) => {
 	const navigate = useNavigate();
-	const dispatch = useDispatch();
 	const authorsList = getAutors(authors, allAuthors).join(', ');
+	const role = useSelector((state) => state.user.role);
 
 	return (
 		<div className={styles.wrapper}>
@@ -54,13 +55,22 @@ const CourseCard = ({
 							navigate(`/courses/${id}`);
 						}}
 					/>
-					<Button
-						text='delete'
-						onClick={() => {
-							dispatch(removeCourse(id));
-						}}
-					/>
-					<Button text='update' onClick={() => {}} />
+					{role === 'admin' && (
+						<>
+							<Button
+								text='delete'
+								onClick={() => {
+									store.dispatch(removeCourseAction(id));
+								}}
+							/>
+							<Button
+								text='update'
+								onClick={() => {
+									navigate(`/courses/update/${id}`);
+								}}
+							/>
+						</>
+					)}
 				</div>
 			</div>
 		</div>

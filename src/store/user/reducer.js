@@ -1,6 +1,7 @@
 import { LOGIN_USER_INFO, LOGOUT_USER_INFO } from './types';
 
 export const userInitialState = {
+	role: '',
 	isAuth: false,
 	name: '',
 	email: '',

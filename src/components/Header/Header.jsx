@@ -12,13 +12,14 @@ const Header = () => {
 	const navigate = useNavigate();
 
 	const name = useSelector((state) => state.user.name);
+	const isAuth = useSelector((state) => state.user.token);
 
 	return (
 		<header className={styles.headerWrapper}>
 			<Logo></Logo>
-			{name && (
+			{isAuth && (
 				<div className={styles.headerItem}>
-					<p>{name}</p>
+					<p>{!!name ? name : 'Admin'}</p>
 					<Button
 						text={BUTTON_TEXT_LOGOUT}
 						onClick={() => {

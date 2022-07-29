@@ -25,11 +25,13 @@ const Login = () => {
 			const response = await loginService(userInfo);
 			if (response.status === 201) {
 				const token = response.data.result.replace('Bearer ', '');
+				const admin = 'admin@email.com';
 				dispatch(
 					loginUserInfo({
 						...userInfo,
 						isAuth: true,
 						token: token,
+						role: userInfo.email === admin ? 'admin' : '',
 					})
 				);
 				localStorage.setItem('token', token);
