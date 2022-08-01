@@ -68,7 +68,7 @@ const CourseForm = () => {
 	};
 
 	return (
-		<div className={styles.wrapper}>
+		<div className={styles.wrapper} data-testid='course-form'>
 			<div className={styles.topSection}>
 				<Input
 					value={title}

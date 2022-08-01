@@ -1,0 +1,64 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CourseCard test should render CourseCard component properly 1`] = `
+<div
+  className="wrapper"
+  data-testid="course"
+>
+  <div
+    className="courseDesc"
+  >
+    <h2>
+      JavaScript
+    </h2>
+    <p>
+      Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum 
+                    has been the industry's standard dummy text ever since the 1500s, when an unknown 
+                    printer took a galley of type and scrambled it to make a type specimen book. It has survived 
+                    not only five centuries, but also the leap into electronic typesetting, remaining essentially u
+                    nchanged.
+    </p>
+  </div>
+  <div
+    className="courseInfoWrapper"
+  >
+    <div
+      className="courseInfo"
+    >
+      <div>
+        <span>
+          Autors: 
+        </span>
+        <p>
+          Vasiliy Dobkin, Nicolas Kim
+        </p>
+      </div>
+      <div>
+        <span>
+          Duration: 
+        </span>
+        <p>
+          2 : 40 hours
+        </p>
+      </div>
+      <div>
+        <span>
+          Created: 
+        </span>
+        <p>
+          08.03.2021
+        </p>
+      </div>
+    </div>
+    <div
+      className="buttonsWrapper"
+    >
+      <button
+        onClick={[Function]}
+      >
+        Show Course
+      </button>
+    </div>
+  </div>
+</div>
+`;
