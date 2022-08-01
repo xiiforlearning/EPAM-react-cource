@@ -1,6 +1,7 @@
 import { LOGIN_USER_INFO, LOGOUT_USER_INFO } from './types';
 
 export const userInitialState = {
+	role: '',
 	isAuth: false,
 	name: '',
 	email: '',
@@ -16,7 +17,10 @@ export default function userReducer(state = userInitialState, action) {
 			};
 
 		case LOGOUT_USER_INFO:
-			return userInitialState;
+			return {
+				...state,
+				...action.payload,
+			};
 
 		default:
 			return state;

@@ -9,6 +9,8 @@ export const BUTTON_TEXT_ADD_AUTHOR = 'Add Author';
 export const BUTTON_TEXT_DELETE_AUTHOR = 'Delete Author';
 export const BUTTON_TEXT_REGISTRATION = 'Registration';
 
+export const STATUS_TEXT_CREATED = 'Created';
+
 export const mockedCoursesList = [
 	{
 		id: 'de5aaa59-90f5-4dbc-b8a9-aaf205c551ba',

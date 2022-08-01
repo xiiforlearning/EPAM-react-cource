@@ -1,4 +1,5 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import { Button } from '../../../../common/Button/Button';
 import Input from '../../../../common/Input/Input';
 import {
@@ -8,6 +9,7 @@ import {
 import styles from './searchBar.module.scss';
 
 const SearchBar = ({ addCourseOnClick }) => {
+	const role = useSelector((state) => state.user.role);
 	return (
 		<div className={styles.wrapper}>
 			<form
@@ -19,7 +21,12 @@ const SearchBar = ({ addCourseOnClick }) => {
 				<Input />
 				<Button text={BUTTON_TEXT_SEARCH}></Button>
 			</form>
-			<Button text={BUTTON_TEXT_ADD_COURSE} onClick={addCourseOnClick}></Button>
+			{role === 'admin' && (
+				<Button
+					text={BUTTON_TEXT_ADD_COURSE}
+					onClick={addCourseOnClick}
+				></Button>
+			)}
 		</div>
 	);
 };

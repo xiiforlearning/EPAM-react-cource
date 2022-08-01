@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 import { Button } from '../../common/Button/Button';
 import Input from '../../common/Input/Input';
@@ -12,43 +13,54 @@ import {
 import AuthorItem from './components/AuthorItem/AuthorItem';
 import Timer from './components/Timer/Timer';
 
-import styles from './createCourse.module.scss';
-import { useDispatch, useSelector } from 'react-redux';
-import { addNewCourse } from '../../store/course/actions';
-import { createNewAuthor } from '../../store/author/actions';
+import styles from './courseForm.module.scss';
+import store from '../../store';
+import { addCourseAction, updateCourseAction } from '../../store/course/thunk';
+import { addAuthorAction } from '../../store/author/thunk';
 
-const CreateCourse = () => {
+const CourseForm = () => {
 	const navigate = useNavigate();
-	const dispatch = useDispatch();
+	const { courseId } = useParams();
 	const allAuthors = useSelector((state) => state.author);
+	const courses = useSelector((state) => state.course);
+	const course = courses.find((course) => course.id === courseId);
 
-	const [title, setTitle] = useState('');
-	const [description, setDescription] = useState('');
+	const [title, setTitle] = useState(courseId ? course.title : '');
+	const [description, setDescription] = useState(
+		courseId ? course.description : ''
+	);
 	const [newAuthor, setNewAuthor] = useState('');
-	const [timer, setTimer] = useState('');
-	const [courseAuthors, setCourseAutors] = useState([]);
-	const [courseAllAuthors, setCourseAllAuthors] = useState([...allAuthors]);
+	const [timer, setTimer] = useState(courseId ? course.duration : '');
+	const [courseAuthors, setCourseAuthors] = useState(
+		courseId ? course.authors : []
+	);
 
-	useEffect(() => {
-		const allAuthorsWithoutCA = allAuthors.map((item) => {
-			return courseAuthors.includes(item) ? '' : item;
-		});
+	const deleteAuthorFromCourseAuthors = (authorId) => {
+		setCourseAuthors(courseAuthors.filter((author) => author !== authorId));
+	};
 
-		setCourseAllAuthors(allAuthorsWithoutCA);
-	}, [allAuthors, courseAuthors]);
+	const addToCourseAuthors = (authorId) => {
+		setCourseAuthors((prev) => [...prev, authorId]);
+	};
 
-	const createCourseHandler = () => {
+	const createCourseHandler = (isUpdate) => {
 		const newCourse = {
 			id: uuidv4(),
 			title,
 			description,
 			creationDate: new Date().toLocaleDateString(),
 			duration: +timer,
-			authors: courseAuthors.map((author) => author.id),
+			authors: courseAuthors,
 		};
 		const areTrue = Object.values(newCourse).every((value) => value);
 		if (areTrue) {
-			dispatch(addNewCourse(newCourse));
+			if (isUpdate) {
+				store.dispatch(
+					updateCourseAction({ ...newCourse, id: courseId }, courseId)
+				);
+			} else {
+				store.dispatch(addCourseAction(newCourse));
+			}
 			navigate('/courses');
 		} else {
 			alert('Please, fill in all fields');
@@ -59,18 +71,28 @@ const CreateCourse = () => {
 		<div className={styles.wrapper}>
 			<div className={styles.topSection}>
 				<Input
+					value={title}
 					labelText='Title'
 					onChange={(e) => {
 						setTitle(e.target.value);
 					}}
 				/>
 				<Button
-					text={BUTTON_TEXT_CREATE_COURSE}
-					onClick={createCourseHandler}
+					text={courseId ? 'update' : BUTTON_TEXT_CREATE_COURSE}
+					onClick={
+						courseId
+							? () => {
+									createCourseHandler(true);
+							  }
+							: () => {
+									createCourseHandler();
+							  }
+					}
 				/>
 				<Link to='/courses'>{'< Back to courses'}</Link>
 			</div>
 			<TextArea
+				value={description}
 				labelText='Description'
 				onChange={(e) => {
 					setDescription(e.target.value);
@@ -89,23 +111,22 @@ const CreateCourse = () => {
 					<Button
 						text={BUTTON_TEXT_CREATE_AUTHOR}
 						onClick={() => {
-							dispatch(createNewAuthor({ name: newAuthor, id: uuidv4() }));
+							store.dispatch(
+								addAuthorAction({ name: newAuthor, id: uuidv4() })
+							);
 							setNewAuthor('');
 						}}
 					/>
 				</div>
 				<div className={styles.authorsContainer}>
 					<h3>Authors</h3>
-					{courseAllAuthors.map(
+					{allAuthors.map(
 						(author) =>
-							author && (
+							!courseAuthors.includes(author.id) && (
 								<AuthorItem
 									key={author.id}
 									author={author}
-									courseAuthors={courseAuthors}
-									courseAllAuthors={courseAllAuthors}
-									setCourseAutors={setCourseAutors}
-									setCourseAllAuthors={setCourseAllAuthors}
+									onClick={addToCourseAuthors}
 									isAllAuthorsList={true}
 								/>
 							)
@@ -114,6 +135,7 @@ const CreateCourse = () => {
 				<div className={styles.durationContainer}>
 					<h3>Duration</h3>
 					<Input
+						value={timer}
 						labelText='Duration'
 						placeholder='Duration in minutes'
 						onChange={(e) => {
@@ -125,21 +147,21 @@ const CreateCourse = () => {
 				</div>
 				<div className={styles.courseAuthorsContainer}>
 					<h3>Course Authors</h3>
-					{courseAuthors.map((author) => (
-						<AuthorItem
-							key={author.id}
-							author={author}
-							courseAuthors={courseAuthors}
-							courseAllAuthors={courseAllAuthors}
-							setCourseAutors={setCourseAutors}
-							setCourseAllAuthors={setCourseAllAuthors}
-							isAllAuthorsList={false}
-						/>
-					))}
+					{allAuthors.map(
+						(author) =>
+							courseAuthors.includes(author.id) && (
+								<AuthorItem
+									key={author.id}
+									author={author}
+									onClick={deleteAuthorFromCourseAuthors}
+									isAllAuthorsList={false}
+								/>
+							)
+					)}
 				</div>
 			</div>
 		</div>
 	);
 };
 
-export default CreateCourse;
+export default CourseForm;
