@@ -17,7 +17,10 @@ export default function userReducer(state = userInitialState, action) {
 			};
 
 		case LOGOUT_USER_INFO:
-			return userInitialState;
+			return {
+				...state,
+				...action.payload,
+			};
 
 		default:
 			return state;

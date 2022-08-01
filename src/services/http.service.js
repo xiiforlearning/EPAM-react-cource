@@ -114,3 +114,18 @@ export const addAuthor = async (body) => {
 		alert(error.response.data.result);
 	}
 };
+
+export const logoutUser = async () => {
+	const token = localStorage.getItem('token');
+	try {
+		const response = await axios.delete('/logout', {
+			headers: {
+				Authorization: `Bearer ${token}`,
+				'Content-Type': 'application/json',
+			},
+		});
+		return response;
+	} catch (error) {
+		alert(error.response.data.result);
+	}
+};

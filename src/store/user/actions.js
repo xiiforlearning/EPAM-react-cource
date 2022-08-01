@@ -5,6 +5,15 @@ export const loginUserInfo = (payload) => ({
 	payload,
 });
 
-export const logoutUserInfo = () => ({
+export const logoutUserInfo = (
+	payload = {
+		role: '',
+		isAuth: false,
+		name: '',
+		email: '',
+		token: '',
+	}
+) => ({
 	type: LOGOUT_USER_INFO,
+	payload,
 });

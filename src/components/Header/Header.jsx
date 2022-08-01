@@ -1,14 +1,14 @@
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '../../common/Button/Button';
 import { BUTTON_TEXT_LOGOUT } from '../../constants';
-import { logoutUserInfo } from '../../store/user/actions';
+import store from '../../store';
+import { logoutUserAction } from '../../store/user/thunk';
 import { Logo } from './components/Logo/Logo';
 import styles from './header.module.scss';
 
 const Header = () => {
-	const dispatch = useDispatch();
 	const navigate = useNavigate();
 
 	const name = useSelector((state) => state.user.name);
@@ -23,7 +23,7 @@ const Header = () => {
 					<Button
 						text={BUTTON_TEXT_LOGOUT}
 						onClick={() => {
-							dispatch(logoutUserInfo());
+							store.dispatch(logoutUserAction());
 							localStorage.removeItem('token');
 							navigate('/login');
 						}}
