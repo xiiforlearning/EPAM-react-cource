@@ -1,24 +1,36 @@
-import React from 'react';
-import { create } from 'react-test-renderer';
+import { render, screen } from '@testing-library/react';
+import { Provider } from 'react-redux';
+import { BrowserRouter } from 'react-router-dom';
 import Header from './Header';
 
-const mockedUsedNavigate = jest.fn();
-const mockedUsedSelector = jest.fn();
+const mockedState = {
+	user: {
+		name: 'Test name',
+		email: '',
+		token: '123123',
+	},
+	course: [],
+	author: [],
+};
 
-jest.mock('react-router-dom', () => ({
-	...jest.requireActual('react-router-dom'),
-	useNavigate: () => mockedUsedNavigate,
-}));
+const mockedStore = {
+	getState: () => mockedState,
+	subscribe: jest.fn(),
+	dispatch: jest.fn(),
+};
 
-jest.mock('react-redux', () => ({
-	...jest.requireActual('react-redux'),
-	useSelector: () => mockedUsedSelector,
-}));
-
-describe('Header test', () => {
-	it('should render Header component properly', () => {
-		const component = create(<Header />);
-
-		expect(component.toJSON()).toMatchSnapshot();
+describe('Header renders correctly', () => {
+	beforeEach(() => {
+		render(
+			<Provider store={mockedStore}>
+				<BrowserRouter>
+					<Header />
+				</BrowserRouter>
+			</Provider>
+		);
+	});
+	test('Header should display name and logo', () => {
+		expect(screen.getByText('Test name')).toBeInTheDocument();
+		expect(screen.getByRole('img')).toBeInTheDocument();
 	});
 });

@@ -1,35 +1,61 @@
-import React from 'react';
-import { create } from 'react-test-renderer';
+import { render, screen } from '@testing-library/react';
+import { Provider } from 'react-redux';
+import { BrowserRouter } from 'react-router-dom';
 import { mockedAuthorsList, mockedCoursesList } from '../../../../constants';
 import CourseCard from './CourseCard';
 
-const mockedUsedNavigate = jest.fn();
-const mockedUsedSelector = jest.fn();
+const mockedState = {
+	user: {
+		role: 'admin',
+	},
+	course: mockedCoursesList,
+	author: mockedAuthorsList,
+};
 
-jest.mock('react-router-dom', () => ({
-	...jest.requireActual('react-router-dom'),
-	useNavigate: () => mockedUsedNavigate,
-}));
+const mockedStore = {
+	getState: () => mockedState,
+	subscribe: jest.fn(),
+	dispatch: jest.fn(),
+};
 
-jest.mock('react-redux', () => ({
-	...jest.requireActual('react-redux'),
-	useSelector: () => mockedUsedSelector,
-}));
-
-describe('CourseCard test', () => {
-	it('should render CourseCard component properly', () => {
-		const component = create(
-			<CourseCard
-				title={mockedCoursesList[0].title}
-				description={mockedCoursesList[0].description}
-				creationDate={mockedCoursesList[0].creationDate}
-				duration={mockedCoursesList[0].duration}
-				authors={mockedCoursesList[0].authors}
-				allAuthors={mockedAuthorsList}
-				id={mockedCoursesList[0].id}
-			/>
+describe('test <CourseCard />', () => {
+	beforeEach(() => {
+		render(
+			<BrowserRouter>
+				<Provider store={mockedStore}>
+					<CourseCard
+						title={mockedState.course[0].title}
+						description='123desc'
+						creationDate={mockedState.course[0].creationDate}
+						duration={mockedState.course[0].duration}
+						authors={mockedState.course[0].authors}
+						allAuthors={mockedState.author}
+						id={mockedState.course[0].id}
+					/>
+				</Provider>
+			</BrowserRouter>
 		);
+	});
 
-		expect(component.toJSON()).toMatchSnapshot();
+	test('should display title', () => {
+		expect(screen.queryByText('JavaScript')).toBeInTheDocument();
+	});
+
+	test('should display description', () => {
+		expect(screen.queryByText('123desc')).toBeInTheDocument();
+	});
+
+	test('should display authors', () => {
+		expect(
+			screen.queryByText('Vasiliy Dobkin, Nicolas Kim')
+		).toBeInTheDocument();
+	});
+
+	test('should display duration', () => {
+		expect(screen.queryByText('2 : 40 hours')).toBeInTheDocument();
+	});
+
+	test('should display created date', () => {
+		expect(screen.queryByText('08.03.2021')).toHaveTextContent('08.03.2021');
 	});
 });

@@ -1,13 +1,15 @@
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { Provider } from 'react-redux';
-import { create } from 'react-test-renderer';
-import { mockedAuthorsList, mockedCoursesList } from '../../constants';
-import SearchBar from './components/SearchBar/SearchBar';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Courses from './Courses';
+import CourseForm from '../CourseForm/CourseForm';
+import { mockedAuthorsList, mockedCoursesList } from '../../constants';
 
 const mockedState = {
 	user: {
 		role: 'admin',
 		isAuth: true,
+		token: '123123',
 	},
 	course: mockedCoursesList,
 	author: mockedAuthorsList,
@@ -19,30 +21,61 @@ const mockedStore = {
 	dispatch: jest.fn(),
 };
 
-const mockedUsedNavigate = jest.fn();
-jest.mock('react-router-dom', () => ({
-	...jest.requireActual('react-router-dom'),
-	useNavigate: () => mockedUsedNavigate,
-}));
+const mockedStateNoCourses = {
+	user: {},
+	course: [],
+	author: [],
+};
 
-describe('Courses test', () => {
-	it('should render Courses component properly', () => {
-		const component = create(
+const mockedStoreNoCourses = {
+	getState: () => mockedStateNoCourses,
+	subscribe: jest.fn(),
+	dispatch: jest.fn(),
+};
+
+describe('test <Courses />', () => {
+	it('should display amount of CourseCard equal length of courses array', async () => {
+		render(
 			<Provider store={mockedStore}>
-				<Courses />
+				<BrowserRouter>
+					<Courses />
+				</BrowserRouter>
 			</Provider>
 		);
 
-		expect(component.toJSON()).toMatchSnapshot();
+		expect((await screen.findAllByTestId('course')).length).toBe(
+			mockedState.course.length
+		);
 	});
 
-	it('courseform should be showed after a click on a button "Add New Course"', async () => {
-		const component = create(
-			<Provider store={mockedStore}>
-				<SearchBar />
+	it('should display 0 course card when courses are empty', async () => {
+		render(
+			<Provider store={mockedStoreNoCourses}>
+				<BrowserRouter>
+					<Courses />
+				</BrowserRouter>
 			</Provider>
 		);
 
-		expect(component.toJSON()).toMatchSnapshot();
+		expect(screen.queryAllByTestId('course').length).toBe(0);
+	});
+
+	it('courseform should be showed after a click on a button "Add new course"', async () => {
+		render(
+			<Provider store={mockedStore}>
+				<BrowserRouter basename=''>
+					<Routes>
+						<Route path='/' element={<Courses />} />
+						<Route path='/courses/add' element={<CourseForm />} />
+					</Routes>
+				</BrowserRouter>
+			</Provider>
+		);
+
+		const newCourseButton = await screen.findByText(/add new course/i);
+		fireEvent.click(newCourseButton);
+
+		const createCourse = await waitFor(() => screen.getByTestId('course-form'));
+		expect(createCourse).toBeInTheDocument();
 	});
 });
