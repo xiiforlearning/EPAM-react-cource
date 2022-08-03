@@ -11,9 +11,14 @@ const Courses = () => {
 	const courses = useSelector((state) => state.course);
 	const allAuthors = useSelector((state) => state.author);
 
-	const renderCourseList = (courses, allAuthors) => {
-		if (courses.length && allAuthors.length) {
-			return courses.map((item) => (
+	return (
+		<div className={styles.wrapper}>
+			<SearchBar
+				addCourseOnClick={() => {
+					navigate('/courses/add');
+				}}
+			/>
+			{courses.map((item) => (
 				<CourseCard
 					key={item.id}
 					title={item.title}
@@ -24,20 +29,7 @@ const Courses = () => {
 					allAuthors={allAuthors}
 					id={item.id}
 				/>
-			));
-		} else {
-			return null;
-		}
-	};
-
-	return (
-		<div className={styles.wrapper}>
-			<SearchBar
-				addCourseOnClick={() => {
-					navigate('/courses/add');
-				}}
-			/>
-			{renderCourseList(courses, allAuthors)}
+			))}
 		</div>
 	);
 };

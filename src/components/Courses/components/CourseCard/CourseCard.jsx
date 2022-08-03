@@ -28,7 +28,7 @@ const CourseCard = ({
 	const role = useSelector((state) => state.user.role);
 
 	return (
-		<div className={styles.wrapper}>
+		<div className={styles.wrapper} data-testid='course'>
 			<div className={styles.courseDesc}>
 				<h2>{title}</h2>
 				<p>{description}</p>
